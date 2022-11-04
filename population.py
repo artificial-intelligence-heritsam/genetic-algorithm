@@ -28,10 +28,16 @@ class Population:
         population_fitness = sum(
             [chromosome.fitness for chromosome in self.population])
 
-        chromosome_probabilities = [
-            chromosome.fitness/population_fitness for chromosome in self.population]
-
-        return np.random.choice(self.population, p=chromosome_probabilities)
+        r = np.random.uniform()
+        i = 0
+        while r > 0:
+            r -= self.population[i].fitness / population_fitness
+            i += 1
+            if i == len(self.population):
+                i -= 1
+                break
+        
+        return self.population[i]
 
     def generate_next_generation(self):
         mating_pool = self.generate_mating_pool()
