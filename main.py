@@ -25,6 +25,8 @@ def main():
 
         print(pop)
         f.write(str(pop) + '\n')
+        print()
+        print(f'Best individual:\n{best}')
 
 
 if __name__ == "__main__":

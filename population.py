@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+
 from individual import Individual
 from util import random_genes, POP_SIZE, P_C
 
@@ -65,9 +67,9 @@ class Population:
         return new_pop
 
 
-    def crossover(self, parent1, parent2, p_c=P_C):
+    def crossover(self, parent1, parent2):
         """Performs crossover"""
-        if np.random.random() <= p_c:
+        if np.random.random() <= P_C:
             crossover_point = np.random.randint(1, len(parent1.chromosome) - 1)
             child_chromosome = parent1.chromosome[:crossover_point] + \
                 parent2.chromosome[crossover_point:]
@@ -84,4 +86,10 @@ class Population:
         return max(self.population, key=lambda x: x.fitness)
 
     def __str__(self) -> str:
-        return f'Generation: {self.generations}\n' + '\n'.join(str(x) for x in self.population) + '\n'
+        df = pd.DataFrame()
+        df['Chromosome'] = [x.chromosome for x in self.population]
+        df['X'] = [x.decode_chromosome()[0] for x in self.population]
+        df['Y'] = [x.decode_chromosome()[1] for x in self.population]
+        df['Fitness'] = [x.fitness for x in self.population]
+
+        return f'Generation: {self.generations}\n' + df.to_string(index=False) + '\n'

@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+
 from util import CHROMOSOME_SIZE, binary_to_decimal, heuristic, P_M
 
 
@@ -22,18 +24,22 @@ class Individual:
 
         return res_x, res_y
 
-    def mutate(self, p_m=P_M):
+    def mutate(self):
         """Mutates the individual"""
         mutated = [int(x) for x in self.chromosome]
 
         for i in range(len(mutated)):
-            if np.random.random() <= p_m:
+            if np.random.random() <= P_M:
                 mutated[i] = np.random.randint(0, 10)
 
         self.chromosome = ''.join(str(x) for x in mutated)
         self.fitness = self.calc_fitness()
 
     def __str__(self) -> str:
-        x, y = self.decode_chromosome()
+        ind = pd.Series()
+        ind['Chromosome'] = self.chromosome
+        ind['X'] = self.decode_chromosome()[0]
+        ind['Y'] = self.decode_chromosome()[1]
+        ind['Fitness'] = self.fitness
 
-        return f'{self.chromosome} ({x:.2f}, {y:.2f}) {self.fitness:.2f}'
+        return str(ind)

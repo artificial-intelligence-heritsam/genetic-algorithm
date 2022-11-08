@@ -1,6 +1,6 @@
 import numpy as np
 
-# Genetic Algorithm Design
+# Genetic Algorithm Parameters
 POP_SIZE = 10
 CHROMOSOME_SIZE = 20
 P_C = 0.7
