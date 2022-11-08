@@ -9,14 +9,16 @@ class Population:
         self.generations = 0
 
     def generate_population(self, size):
+        """Generates a population of individuals"""
         population = []
 
         for _ in range(size):
-            population.append(Individual(random_genes(20)))
+            population.append(Individual(random_genes()))
 
         return population
 
     def generate_mating_pool(self):
+        """Generates a mating pool"""
         mating_pool = []
 
         for _ in range(len(self.population)):
@@ -25,6 +27,7 @@ class Population:
         return mating_pool
 
     def roulette_wheel_selection(self):
+        """Performs roulette wheel selection"""
         population_fitness = sum(
             [chromosome.fitness for chromosome in self.population])
 
@@ -40,6 +43,7 @@ class Population:
         return self.population[i]
 
     def generate_next_generation(self):
+        """Generates the next generation"""
         mating_pool = self.generate_mating_pool()
         new_pop = []
 
@@ -62,6 +66,7 @@ class Population:
 
 
     def crossover(self, parent1, parent2, p_c=P_C):
+        """Performs crossover"""
         if np.random.random() <= p_c:
             crossover_point = np.random.randint(1, len(parent1.chromosome) - 1)
             child_chromosome = parent1.chromosome[:crossover_point] + \
@@ -75,6 +80,7 @@ class Population:
         return Individual(child_chromosome), Individual(child2_chromosome)
 
     def select_best(self):
+        """Selects the best individual"""
         return max(self.population, key=lambda x: x.fitness)
 
     def __str__(self) -> str:
